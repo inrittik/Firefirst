@@ -1,7 +1,10 @@
 const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
+const menuToggler = document.querySelector('.menu-toggle');
+const chatSidebar = document.querySelector('.chat-sidebar');
 const socket = io();
 
+// catching message on the frontend
 socket.on('message', message =>{
     console.log(message);
     displayMessage(message);
@@ -10,6 +13,23 @@ socket.on('message', message =>{
     chatMessages.scrollTop = chatMessages.scrollHeight;
 })
 
+// listens for click event on menuToggler button
+menuToggler.addEventListener('click', ()=> {
+    chatSidebar.classList.toggle('chat-sidebar');
+    chatSidebar.classList.toggle('offcanvas');
+})
+
+// auto adding and removing of offcanvas sidebar based on window size
+window.addEventListener('resize', ()=> {
+    if(document.documentElement.clientWidth > 700){
+        chatSidebar.classList.remove('offcanvas');
+        if(!chatSidebar.classList.contains('chat-sidebar')){
+            chatSidebar.classList.toggle('chat-sidebar');
+        }
+    }
+})
+
+// emit message to everyone
 chatForm.addEventListener('submit', (e)=> {
     e.preventDefault();
 
