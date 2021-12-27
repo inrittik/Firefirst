@@ -17,6 +17,9 @@ socket.on('message', message =>{
 menuToggler.addEventListener('click', ()=> {
     chatSidebar.classList.toggle('chat-sidebar');
     chatSidebar.classList.toggle('offcanvas');
+
+    menuToggler.classList.toggle('fa-chevron-circle-down');
+    menuToggler.classList.toggle('fa-chevron-up')
 })
 
 // auto adding and removing of offcanvas sidebar based on window size
@@ -26,6 +29,8 @@ window.addEventListener('resize', ()=> {
         if(!chatSidebar.classList.contains('chat-sidebar')){
             chatSidebar.classList.toggle('chat-sidebar');
         }
+        menuToggler.classList.add('fa-chevron-circle-down');
+        menuToggler.classList.remove('fa-chevron-up')
     }
 })
 
