@@ -3,7 +3,8 @@
 :root {
 	--dark-color-a: #ec5833;
 	--dark-color-b: #f18724;
-	--light-color: white;
+	--light-color: rgba(233, 230, 230, 0.61);
+	--light-color-b: #fff;
 	--success-color: #5cb85c;
 	--error-color: #d9534f;
 }
@@ -32,7 +33,7 @@ a {
 .btn {
 	cursor: pointer;
 	padding: 5px 15px;
-	background: var(--light-color);
+	background: var(--light-color-b);
 	color: var(--dark-color-a);
 	border: 0;
 	font-size: 17px;
@@ -44,7 +45,7 @@ a {
 	max-width: 1100px;
 	background: #fff;
 	margin: 30px auto;
-	overflow: auto;
+	overflow: scroll;
 }
 
 .chat-header {
@@ -204,11 +205,14 @@ a {
 }
 
 /* menu toggle */
-.menu-toggle{
+.menu-toggle-down{
 	display: none;
 }
+.menu-toggle-up{
+	transform: rotate(180deg);
+}
 @media (min-width: 700px){
-	.menu-toggle{
+	.menu-toggle-down{
 		display: none;
 	}
 }
@@ -221,7 +225,7 @@ a {
 	.chat-sidebar {
 		display: none;
 	}
-	.menu-toggle{
+	.menu-toggle-down{
 		display: inline;
 	}
 }
