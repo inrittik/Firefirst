@@ -1,2 +1,2 @@
 # Firefirst
-A real-time chat web app build with NodeJs
+A real-time chat web application build with NodeJs and socket.io
