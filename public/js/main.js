@@ -2,10 +2,24 @@ const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
 const menuToggler = document.querySelector('.menu-toggle-down');
 const chatSidebar = document.querySelector('.chat-sidebar');
+const roomName = document.getElementById('room-name');
+const userList = document.getElementById('users');
 const socket = io();
 
 const {username, room} = Qs.parse(location.search, { ignoreQueryPrefix: true} );
 console.log(username, room);
+
+// join room
+socket.emit('joinRoom', { username, room });
+
+// get user and room info
+socket.on('roomUsers', ({ room, users })=> {
+    console.log(room, users);
+    roomName.innerText = room;
+
+    userList.innerHTML = `
+    ${users.map(user => `<li>${user.username}</li>`).join('')}`
+})
 
 // catching message on the frontend
 socket.on('message', message =>{
