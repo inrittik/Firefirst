@@ -4,6 +4,7 @@ const menuToggler = document.querySelector('.menu-toggle-down');
 const chatSidebar = document.querySelector('.chat-sidebar');
 const roomName = document.getElementById('room-name');
 const userList = document.getElementById('users');
+const typingBox = document.querySelector('.typing');
 const socket = io();
 
 const {username, room} = Qs.parse(location.search, { ignoreQueryPrefix: true} );
@@ -73,3 +74,28 @@ function displayMessage(message) {
     chatForm.reset();
     chatForm.focus();
 }
+
+let typing = false;
+let timeout = undefined;
+
+const typingTimeout = ()=> {
+    typing = false;
+    socket.emit('typeStatus', {username, message: ''});
+};
+
+chatForm.addEventListener('keypress', ()=>{
+    if(typing==false){
+        typing = true;
+        socket.emit('typeStatus', {username, message: 'Typing...'});
+        timeout = setTimeout(typingTimeout, 2000);
+    }
+    else {
+        clearTimeout(timeout);
+        timeout = setTimeout(typingTimeout, 2000);
+    }
+})
+
+socket.on('typeStatus', message=>{
+    if(message=='') typingBox.textContent = '';
+    else typingBox.textContent = message;
+})

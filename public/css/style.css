@@ -265,3 +265,10 @@ input:focus, textarea:focus, select:focus{
 		/* color: var(--dark-color-b); */
 	}
 }
+
+/* typing */
+.typing{
+	position: fixed;
+	top: 68vh;
+	color:#777;
+}

@@ -38,6 +38,16 @@ io.on('connection', socket=> {
         io.to(user.room).emit('message',formatMessage(user.username, message));
     })
 
+    socket.on('typeStatus', ({username, message})=>{
+        const user = currentUser(socket.id);
+        if(!message==''){
+            socket.broadcast.to(user.room).emit('typeStatus', `${username} is ${message}`);
+        }
+        else{
+            socket.broadcast.to(user.room).emit('typeStatus', '');
+        }
+    })
+
     socket.on('disconnect', ()=>{
         const user = userLeave(socket.id);
         // const user = currentUser(socket.id);
