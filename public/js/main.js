@@ -1,5 +1,6 @@
 const chatForm = document.getElementById('chat-form');
 const chatMessages = document.querySelector('.chat-messages');
+const chatMain = document.querySelector('.chat-main');
 const menuToggler = document.querySelector('.menu-toggle-down');
 const chatSidebar = document.querySelector('.chat-sidebar');
 const roomName = document.getElementById('room-name');
@@ -8,27 +9,26 @@ const typingBox = document.querySelector('.typing');
 const socket = io();
 
 const {username, room} = Qs.parse(location.search, { ignoreQueryPrefix: true} );
-console.log(username, room);
 
 // join room
 socket.emit('joinRoom', { username, room });
 
+// catching message on the frontend
+socket.on('message', message =>{
+    displayMessage(message);
+
+    // scroll to bottom
+    chatMain.scrollTop = chatMain.scrollHeight;
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+})
+
+
 // get user and room info
 socket.on('roomUsers', ({ room, users })=> {
-    console.log(room, users);
     roomName.innerText = room;
 
     userList.innerHTML = `
     ${users.map(user => `<li>${user.username}</li>`).join('')}`
-})
-
-// catching message on the frontend
-socket.on('message', message =>{
-    console.log(message);
-    displayMessage(message);
-
-    // scroll to bottom
-    chatMessages.scrollTop = chatMessages.scrollHeight;
 })
 
 // listens for click event on menuToggler button
@@ -70,7 +70,7 @@ function displayMessage(message) {
     <p class="text">
         ${message.message}
     </p>`;
-    document.querySelector('.chat-messages').appendChild(div);
+    chatMessages.appendChild(div);
     chatForm.reset();
     chatForm.focus();
 }
@@ -95,9 +95,18 @@ chatForm.addEventListener('keyup', (e)=>{
             timeout = setTimeout(typingTimeout, 2000);
         }
     }
+    else{
+        timeout = setTimeout(typingTimeout, 200);
+    }
 })
 
 socket.on('typeStatus', message=>{
-    if(message=='') typingBox.textContent = '';
-    else typingBox.textContent = message;
+    if(message=='') {
+        typingBox.textContent = '';
+    }
+    else{
+        typingBox.textContent = message;
+        typingBox.style.display = 'inline-block';
+    }
+
 })
