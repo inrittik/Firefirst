@@ -83,15 +83,17 @@ const typingTimeout = ()=> {
     socket.emit('typeStatus', {username, message: ''});
 };
 
-chatForm.addEventListener('keypress', ()=>{
-    if(typing==false){
-        typing = true;
-        socket.emit('typeStatus', {username, message: 'Typing...'});
-        timeout = setTimeout(typingTimeout, 2000);
-    }
-    else {
-        clearTimeout(timeout);
-        timeout = setTimeout(typingTimeout, 2000);
+chatForm.addEventListener('keyup', (e)=>{
+    if(e.key!=="Enter"){
+        if(typing==false){
+            typing = true;
+            socket.emit('typeStatus', {username, message: 'Typing...'});
+            timeout = setTimeout(typingTimeout, 2000);
+        }
+        else {
+            clearTimeout(timeout);
+            timeout = setTimeout(typingTimeout, 2000);
+        }
     }
 })
 
